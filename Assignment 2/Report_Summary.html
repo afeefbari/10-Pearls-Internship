@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Poster E-Commerce QA Test Execution Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+        }
+        
+        header {
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .header-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .info-box {
+            background: #ecf0f1;
+            padding: 12px;
+            border-radius: 4px;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .info-value {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-top: 4px;
+            font-weight: bold;
+        }
+        
+        .summary-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .metric-card.pass {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .metric-card.fail {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+        
+        .metric-card.skip {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+        
+        .metric-percentage {
+            font-size: 11px;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+        
+        section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+        
+        .sprint-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .sprint-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #bdc3c7;
+        }
+        
+        .user-story-section {
+            background: white;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .story-header {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        thead {
+            background: #34495e;
+            color: white;
+        }
+        
+        th {
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 13px;
+        }
+        
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-skip {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .test-type {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .type-smoke {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .type-functional {
+            background: #f3e5f5;
+            color: #6a1b9a;
+        }
+        
+        .type-negative {
+            background: #ffe0b2;
+            color: #e65100;
+        }
+        
+        .type-performance {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .type-edge {
+            background: #ffccbc;
+            color: #bf360c;
+        }
+        
+        .issues-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .issue-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ffeaa7;
+        }
+        
+        .issue-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .issue-id {
+            font-weight: bold;
+            color: #856404;
+        }
+        
+        .issue-desc {
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .recommendations {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        
+        .recommendations h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+        
+        .recommendations ul {
+            margin-left: 20px;
+            color: #0c5460;
+        }
+        
+        .recommendations li {
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 40px;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .coverage-bar {
+            height: 30px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            margin: 10px 0;
+        }
+        
+        .coverage-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .segment-pass {
+            background: #27ae60;
+        }
+        
+        .segment-fail {
+            background: #e74c3c;
+        }
+        
+        .segment-skip {
+            background: #f39c12;
+        }
+        
+        .page-break {
+            page-break-after: always;
+            margin: 40px 0;
+            padding: 20px 0;
+            border-top: 2px solid #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-title">📋 Poster E-Commerce Platform</div>
+            <div class="header-title" style="font-size: 20px; color: #667eea; margin-top: 5px;">QA Test Execution Report</div>
+            <div class="header-info">
+                <div class="info-box">
+                    <div class="info-label">Project Name</div>
+                    <div class="info-value">Poster E-Commerce</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Report Date</div>
+                    <div class="info-value">May 1-2, 2024</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Test Environment</div>
+                    <div class="info-value">Staging</div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- SUMMARY METRICS -->
+        <section>
+            <div class="section-title">📊 Executive Summary</div>
+            <div class="summary-metrics">
+                <div class="metric-card">
+                    <div class="metric-label">Total Tests</div>
+                    <div class="metric-value">20</div>
+                    <div class="metric-percentage">100%</div>
+                </div>
+                <div class="metric-card pass">
+                    <div class="metric-label">Passed</div>
+                    <div class="metric-value">18</div>
+                    <div class="metric-percentage">90%</div>
+                </div>
+                <div class="metric-card fail">
+                    <div class="metric-label">Failed</div>
+                    <div class="metric-value">2</div>
+                    <div class="metric-percentage">10%</div>
+                </div>
+                <div class="metric-card skip">
+                    <div class="metric-label">Skipped</div>
+                    <div class="metric-value">0</div>
+                    <div class="metric-percentage">0%</div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px; color: #2c3e50;">Test Coverage by Sprint</h3>
+                <div>
+                    <strong style="color: #666;">Sprint 1: Product Browsing & Details</strong>
+                    <div class="coverage-bar">
+                        <div class="coverage-segment segment-pass" style="width: 90%;">18/20</div>
+                        <div class="coverage-segment segment-fail" style="width: 10%;">2/20</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <strong style="color: #666;">Sprint 2: Cart & Checkout</strong>
+                    <div class="coverage-bar">
+                        <div class="coverage-segment segment-pass" style="width: 88%;">7/8</div>
+                        <div class="coverage-segment segment-fail" style="width: 12%;">1/8</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SPRINT 1 DETAILED RESULTS -->
+        <section>
+            <div class="section-title">🔧 Sprint 1: Product Browsing & Details</div>
+            
+            <!-- US1.1 -->
+            <div class="sprint-section">
+                <div class="sprint-title">📌 User Story 1.1: View All Posters</div>
+                <div class="user-story-section">
+                    <div class="story-header">As a user, I want to view all posters so I can browse available products</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TC ID</th>
+                                <th>Test Case</th>
+                                <th>Test Type</th>
+                                <th>Status</th>
+                                <th>Execution Date</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TC01</strong></td>
+                                <td>Display All Posters Homepage</td>
+                                <td><span class="test-type type-smoke">Smoke</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>Posters loaded within 2 seconds ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC01E1</strong></td>
+                                <td>No Posters Available State</td>
+                                <td><span class="test-type type-negative">Negative</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>Empty state handled gracefully ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC01E2</strong></td>
+                                <td>Slow Loading Performance Test</td>
+                                <td><span class="test-type type-performance">Performance</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>Page load time: 3.5 seconds on 3G throttle ✓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- US1.2 -->
+            <div class="sprint-section">
+                <div class="sprint-title">📌 User Story 1.2: Filter Posters by Category</div>
+                <div class="user-story-section">
+                    <div class="story-header">As a user, I want to filter posters by category</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TC ID</th>
+                                <th>Test Case</th>
+                                <th>Test Type</th>
+                                <th>Status</th>
+                                <th>Execution Date</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TC02</strong></td>
+                                <td>Filter Posters by Single Category</td>
+                                <td><span class="test-type type-functional">Functional</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>Filter applied instantly without page reload ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC02E1</strong></td>
+                                <td>Empty Category Results</td>
+                                <td><span class="test-type type-negative">Negative</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>UX preserved with suggestion to clear filter ✓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- US1.3 -->
+            <div class="sprint-section">
+                <div class="sprint-title">📌 User Story 1.3: Search Posters</div>
+                <div class="user-story-section">
+                    <div class="story-header">As a user, I want to search posters</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TC ID</th>
+                                <th>Test Case</th>
+                                <th>Test Type</th>
+                                <th>Status</th>
+                                <th>Execution Date</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TC03</strong></td>
+                                <td>Valid Search Query</td>
+                                <td><span class="test-type type-functional">Functional</span></td>
+                                <td><span class="status-badge status-fail">FAIL</span></td>
+                                <td>2024-05-01</td>
+                                <td>❌ Search returned 3/10 expected results - issue with search indexing</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC03E1</strong></td>
+                                <td>Empty Search Query</td>
+                                <td><span class="test-type type-negative">Negative</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>Validation message displayed as expected ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC03E2</strong></td>
+                                <td>Special Characters in Search</td>
+                                <td><span class="test-type type-negative">Negative</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>Query sanitized correctly, no errors thrown ✓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- US1.4 -->
+            <div class="sprint-section">
+                <div class="sprint-title">📌 User Story 1.4: View Product Details</div>
+                <div class="user-story-section">
+                    <div class="story-header">As a user, I want to view product details</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TC ID</th>
+                                <th>Test Case</th>
+                                <th>Test Type</th>
+                                <th>Status</th>
+                                <th>Execution Date</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TC04</strong></td>
+                                <td>Open Product Detail Page</td>
+                                <td><span class="test-type type-smoke">Smoke</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>Page loads in ~1.2 seconds ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC05</strong></td>
+                                <td>Verify Product Detail Information</td>
+                                <td><span class="test-type type-functional">Functional</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>All fields verified: title, price, dimensions correct ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC04E1</strong></td>
+                                <td>Missing Product Image Handling</td>
+                                <td><span class="test-type type-negative">Negative</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-01</td>
+                                <td>Placeholder image shown with alt: 'Image unavailable' ✓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <div class="page-break"></div>
+        
+        <!-- SPRINT 2 DETAILED RESULTS -->
+        <section>
+            <div class="section-title">🛒 Sprint 2: Cart & Checkout</div>
+            
+            <!-- US2.1 -->
+            <div class="sprint-section">
+                <div class="sprint-title">📌 User Story 2.1: Add Items to Cart</div>
+                <div class="user-story-section">
+                    <div class="story-header">As a user, I want to add items to cart</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TC ID</th>
+                                <th>Test Case</th>
+                                <th>Test Type</th>
+                                <th>Status</th>
+                                <th>Execution Date</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TC07</strong></td>
+                                <td>Add Single Item to Cart</td>
+                                <td><span class="test-type type-smoke">Smoke</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Toast notification displayed for 3 seconds ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC07E1</strong></td>
+                                <td>Add Duplicate Item Quantity</td>
+                                <td><span class="test-type type-functional">Functional</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Quantity correctly incremented from 1 to 2 ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC07E2</strong></td>
+                                <td>Add Out of Stock Item</td>
+                                <td><span class="test-type type-negative">Negative</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Out-of-stock badge and disabled button working correctly ✓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- US2.2 -->
+            <div class="sprint-section">
+                <div class="sprint-title">📌 User Story 2.2: Manage Cart Items</div>
+                <div class="user-story-section">
+                    <div class="story-header">As a user, I want to manage cart items</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TC ID</th>
+                                <th>Test Case</th>
+                                <th>Test Type</th>
+                                <th>Status</th>
+                                <th>Execution Date</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TC08</strong></td>
+                                <td>Update Item Quantity in Cart</td>
+                                <td><span class="test-type type-functional">Functional</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Total updated correctly: 1x$25 vs 3x$75 ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC09</strong></td>
+                                <td>Remove Item from Cart</td>
+                                <td><span class="test-type type-functional">Functional</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Item removed instantly without page reload ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC08E1</strong></td>
+                                <td>Set Item Quantity to Zero</td>
+                                <td><span class="test-type type-edge">Edge Case</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Item removed when quantity set to 0 ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC09E1</strong></td>
+                                <td>Remove Last Item from Cart</td>
+                                <td><span class="test-type type-edge">Edge Case</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Empty state shows appropriate messaging ✓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- US2.3 -->
+            <div class="sprint-section">
+                <div class="sprint-title">📌 User Story 2.3: Checkout Process</div>
+                <div class="user-story-section">
+                    <div class="story-header">As a user, I want to checkout</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TC ID</th>
+                                <th>Test Case</th>
+                                <th>Test Type</th>
+                                <th>Status</th>
+                                <th>Execution Date</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TC10</strong></td>
+                                <td>Proceed to Checkout Page</td>
+                                <td><span class="test-type type-smoke">Smoke</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Checkout page loaded in ~0.8 seconds ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC11</strong></td>
+                                <td>Verify Order Summary Before Payment</td>
+                                <td><span class="test-type type-functional">Functional</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Order summary correctly shows 3 items totaling $185 ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC10E1</strong></td>
+                                <td>Attempt Checkout with Empty Cart</td>
+                                <td><span class="test-type type-negative">Negative</span></td>
+                                <td><span class="status-badge status-pass">PASS</span></td>
+                                <td>2024-05-02</td>
+                                <td>Validation working - redirected to shop with message ✓</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC10E2</strong></td>
+                                <td>Network Failure During Checkout</td>
+                                <td><span class="test-type type-edge">Edge Case</span></td>
+                                <td><span class="status-badge status-fail">FAIL</span></td>
+                                <td>2024-05-02</td>
+                                <td>❌ Error handling inconsistent - some data lost on network failure</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ISSUES FOUND -->
+        <section>
+            <div class="section-title">🔴 Critical Issues Found</div>
+            <div class="issues-section">
+                <div class="issue-item">
+                    <div class="issue-id">BUG-001: Search Functionality Returns Incomplete Results</div>
+                    <div class="issue-desc">
+                        <strong>Severity:</strong> High | <strong>Status:</strong> Open<br>
+                        <strong>Test Case:</strong> TC03 (Valid Search Query)<br>
+                        <strong>Description:</strong> When users search for posters with the keyword "Nature", only 3 results are returned instead of the expected 10. This indicates a problem with search indexing or query matching.<br>
+                        <strong>Steps to Reproduce:</strong> 1) Go to homepage 2) Enter "Nature" in search box 3) Click search 4) Observe results count<br>
+                        <strong>Expected:</strong> 10+ relevant results matching "Nature" keyword<br>
+                        <strong>Actual:</strong> Only 3 results returned<br>
+                        <strong>Impact:</strong> Users cannot effectively find products they're looking for, reducing sales potential
+                    </div>
+                </div>
+                
+                <div class="issue-item">
+                    <div class="issue-id">BUG-002: Network Error Handling During Checkout</div>
+                    <div class="issue-desc">
+                        <strong>Severity:</strong> High | <strong>Status:</strong> Open<br>
+                        <strong>Test Case:</strong> TC10E2 (Network Failure During Checkout)<br>
+                        <strong>Description:</strong> When network connectivity is lost during checkout, form data is not preserved. Users lose their entered information and must restart the process.<br>
+                        <strong>Steps to Reproduce:</strong> 1) Proceed to checkout 2) Fill in shipping details 3) Simulate network disconnection 4) Attempt to submit 5) Reconnect network 6) Observe data loss<br>
+                        <strong>Expected:</strong> Form data preserved, user can retry submission<br>
+                        <strong>Actual:</strong> Form is cleared, data is lost<br>
+                        <strong>Impact:</strong> Poor user experience, increased cart abandonment rate
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- RECOMMENDATIONS -->
+        <section>
+            <div class="section-title">💡 Recommendations & Next Steps</div>
+            <div class="recommendations">
+                <h4>Priority Actions Required:</h4>
+                <ul>
+                    <li><strong>Immediate (Before Release):</strong>
+                        <ul style="margin-top: 5px;">
+                            <li>Fix search indexing issue (BUG-001) - impacts core functionality</li>
+                            <li>Implement form data persistence for network resilience (BUG-002)</li>
+                            <li>Re-run TC03 and TC10E2 after fixes are applied</li>
+                        </ul>
+                    </li>
+                    <li><strong>Short Term (Next Sprint):</strong>
+                        <ul style="margin-top: 5px;">
+                            <li>Add comprehensive error handling for network scenarios</li>
+                            <li>Implement local storage for form data during checkout</li>
+                            <li>Add automated test coverage for network resilience</li>
+                            <li>Performance optimization - achieve target load time &lt; 2 seconds</li>
+                        </ul>
+                    </li>
+                    <li><strong>Ongoing:</strong>
+                        <ul style="margin-top: 5px;">
+                            <li>Monitor search performance with analytics</li>
+                            <li>Continue comprehensive test coverage for all user flows</li>
+                            <li>Implement CI/CD integration for automated testing</li>
+                            <li>Load testing for multiple concurrent users</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- TEST METRICS DETAILS -->
+        <section>
+            <div class="section-title">📈 Detailed Test Metrics</div>
+            <div style="background: white; padding: 20px; border-radius: 8px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                            <th>Target</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Test Cases</td>
+                            <td>20</td>
+                            <td>20</td>
+                            <td><span class="status-badge status-pass">✓ MET</span></td>
+                        </tr>
+                        <tr>
+                            <td>Pass Rate</td>
+                            <td>90% (18/20)</td>
+                            <td>&gt; 95%</td>
+                            <td><span class="status-badge status-fail">✗ BELOW TARGET</span></td>
+                        </tr>
+                        <tr>
+                            <td>Critical Issues</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td><span class="status-badge status-fail">✗ ACTION NEEDED</span></td>
+                        </tr>
+                        <tr>
+                            <td>Test Coverage by Sprint</td>
+                            <td>100%</td>
+                            <td>100%</td>
+                            <td><span class="status-badge status-pass">✓ MET</span></td>
+                        </tr>
+                        <tr>
+                            <td>Average Execution Time</td>
+                            <td>1.8 hours/sprint</td>
+                            <td>&lt; 2 hours</td>
+                            <td><span class="status-badge status-pass">✓ MET</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p><strong>QA Test Execution Report</strong></p>
+            <p>Generated on: May 2, 2024 | Executed by: QA Engineering Team | Environment: Staging</p>
+            <p>This report contains detailed test execution results and is intended for internal QA and development team use.</p>
+        </footer>
+    </div>
+</body>
+</html>
