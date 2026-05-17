@@ -1,0 +1,11 @@
+userId,title,body
+1,First API Test Post,This is the body content for the first test post from our API testing suite
+2,Second API Test Post,Testing CRUD operations with multiple data sets for comprehensive coverage
+3,Third API Test Post,This data-driven test validates CSV parsing and variable substitution
+4,Fourth API Test Post,Performance testing with different payloads and response validations
+5,Fifth API Test Post,Final test iteration to ensure all CRUD operations work correctly
+1,Automation Test Post,Automated testing framework for REST API with response assertions
+2,Integration Test Post,Integration testing across multiple endpoints with data validation
+3,Performance Benchmark,Load testing with various thread counts and ramp-up periods
+4,Regression Test Post,Regression testing suite for detecting API functionality changes
+5,Smoke Test Post,Smoke tests to verify basic API functionality before full deployment
