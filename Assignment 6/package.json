@@ -1,0 +1,37 @@
+{
+  "name": "assignment-6",
+  "version": "1.0.0",
+  "description": "SauceDemo Cypress Automation Framework - E2E UI Testing with POM",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run",
+    "test:open": "cypress open",
+    "test:headless": "cypress run --headless",
+    "test:chrome": "cypress run --browser chrome",
+    "test:firefox": "cypress run --browser firefox",
+    "test:edge": "cypress run --browser edge",
+    "test:login-failure": "cypress run --spec 'cypress/e2e/loginFailure.cy.js'",
+    "test:login-success": "cypress run --spec 'cypress/e2e/spec.cy.js'",
+    "test:product-nav": "cypress run --spec 'cypress/e2e/spec-copy-1.cy.js'",
+    "test:cart": "cypress run --spec 'cypress/e2e/spec-copy-2.cy.js'",
+    "test:advanced": "cypress run --spec 'cypress/e2e/spec-copy-3.cy.js'",
+    "test:all-features": "cypress run --spec 'cypress/e2e/**/*.cy.js'",
+    "test:debug": "cypress run --headed --no-exit"
+  },
+  "keywords": [
+    "cypress",
+    "automation",
+    "testing",
+    "e2e",
+    "saucedemo",
+    "page-object-model",
+    "pom"
+  ],
+  "author": "10-Pearls Internship",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "cypress": "^15.16.0"
+  }
+}
+
